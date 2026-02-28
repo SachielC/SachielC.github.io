@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Navigation Scrolled State
+    // Navigation Scrolled State
     const nav = document.querySelector('.glass-nav');
-    
+
     window.addEventListener('scroll', () => {
         if (window.scrollY > 50) {
             nav.classList.add('scrolled');
@@ -10,12 +10,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // 2. Typing Effect for Dynamic Title
+    // Typing Effect for Dynamic Title
     const typingSpan = document.querySelector('.typing-text');
     const texts = [
         "I build data-driven solutions",
         "I research Machine Learning",
-        "I engineer Big Data pipelines",
+        "I engineer Big Data Pipelines",
         "I develop full-stack applications"
     ];
     let textIndex = 0;
@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function typeEffect() {
         const currentText = texts[textIndex];
-        
+
         if (isDeleting) {
             typingSpan.textContent = currentText.substring(0, charIndex - 1);
             charIndex--;
@@ -36,55 +36,55 @@ document.addEventListener('DOMContentLoaded', () => {
         let typingSpeed = isDeleting ? 50 : 100;
 
         if (!isDeleting && charIndex === currentText.length) {
-            typingSpeed = 2000; // Pause at end of word
+            typingSpeed = 2000;
             isDeleting = true;
         } else if (isDeleting && charIndex === 0) {
             isDeleting = false;
             textIndex = (textIndex + 1) % texts.length;
-            typingSpeed = 500; // Pause before typing next word
+            typingSpeed = 500;
         }
 
         setTimeout(typeEffect, typingSpeed);
     }
 
-    // Start typing effect
-    if(typingSpan) {
+    if (typingSpan) {
         typeEffect();
     }
 
 
-    // 3. Scroll Reveal Animation for Sections
+    // Scroll Reveal Animation
     const revealElements = document.querySelectorAll('.slide-in');
+
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.05
+    };
 
     const revealObserver = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('visible');
-                observer.unobserve(entry.target); // Stop observing once revealed
+                observer.unobserve(entry.target);
             }
         });
-    }, {
-        root: null,
-        threshold: 0.15, // Trigger when 15% is visible
-        rootMargin: "0px 0px -50px 0px" // Start a bit earlier
-    });
+    }, observerOptions);
 
     revealElements.forEach(el => {
         revealObserver.observe(el);
     });
 
-    // 4. Smooth Scrolling for Internal Nav Links
+    // Smooth Scrolling for Internal Nav Links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
-            
+
             const targetId = this.getAttribute('href');
-            if(targetId === '#') return;
+            if (targetId === '#') return;
 
             const targetElement = document.querySelector(targetId);
-            
+
             if (targetElement) {
-                // Account for fixed header height
                 const headerOffset = 80;
                 const elementPosition = targetElement.getBoundingClientRect().top;
                 const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
@@ -97,21 +97,46 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // 5. Dynamic Glow effect on Glass Cards based on exact mouse position
+    // Dynamic Glow effect on Glass Cards
     const cards = document.querySelectorAll('.glass-card');
     cards.forEach(card => {
         card.addEventListener('mousemove', e => {
             const rect = card.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
-            
-            // Apply radial gradient centered at mouse coordinates
-            card.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(255,255,255,0.08), rgba(255,255,255,0.03) 40%)`;
+            card.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(255, 255, 255, 0.03), transparent 28%), var(--glass-bg)`;
         });
 
         card.addEventListener('mouseleave', () => {
-            // Reset to default glass background
-            card.style.background = 'rgba(255, 255, 255, 0.03)';
+            card.style.background = '';
         });
     });
+
+    // Theme Toggle Logic
+    const themeBtn = document.getElementById('theme-toggle');
+    if (themeBtn) {
+        const themeIcon = themeBtn.querySelector('i');
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        updateThemeIcon(savedTheme);
+
+        themeBtn.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        });
+
+        function updateThemeIcon(theme) {
+            if (theme === 'light') {
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+            } else {
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            }
+        }
+    }
 });

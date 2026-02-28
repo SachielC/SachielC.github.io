@@ -2,30 +2,53 @@
    CSS Variables & Theme
    ========================================= */
 :root {
-    /* Colors */
     --bg-color-main: #0B0F19;
-    /* Deep space blue/black */
-    --bg-color-secondary: rgba(20, 26, 40, 0.7);
+    --bg-color-secondary: rgba(20, 26, 40, 0.805);
     --text-primary: #F3F4F6;
     --text-secondary: #9CA3AF;
 
-    --accent-color: #00D4FF;
-    /* Vibrant cyan */
+    --accent-color: #15d1f6;
     --accent-color-hover: #00A6CC;
     --accent-glow: rgba(0, 212, 255, 0.3);
 
-    /* Glassmorphism settings */
     --glass-bg: rgba(255, 255, 255, 0.03);
     --glass-border: rgba(255, 255, 255, 0.08);
     --glass-blur: blur(16px);
 
-    /* Fonts */
-    --font-main: 'Inter', sans-serif;
-    --font-heading: 'Outfit', sans-serif;
+    --nav-bg: rgba(11, 15, 25, 0.8);
+    --nav-bg-scrolled: rgba(11, 15, 25, 0.95);
+    --glass-hover-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    --glass-hover-border: rgba(255, 255, 255, 0.15);
+    --bg-gradient-1: rgba(0, 212, 255, 0.15);
+    --bg-gradient-2: rgba(138, 43, 226, 0.1);
 
-    /* Transitions */
-    --transition-fast: 0.2s ease;
+    --font-main: 'helvetica', sans-serif;
+    --font-heading: 'helvetica', sans-serif;
+
+    --transition-fast: .2s ease;
     --transition-normal: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+[data-theme="light"] {
+    --bg-color-main: #f0f4f8;
+    --bg-color-secondary: rgba(255, 255, 255, 0.8);
+    --text-primary: #111827;
+    --text-secondary: #4b5563;
+
+    --accent-color: #0ea5e9;
+    --accent-color-hover: #0284c7;
+    --accent-glow: rgba(14, 165, 233, 0.4);
+
+    --glass-bg: rgba(255, 255, 255, 0.6);
+    --glass-border: rgba(255, 255, 255, 0.9);
+    --glass-blur: blur(24px);
+
+    --nav-bg: rgba(255, 255, 255, 0.6);
+    --nav-bg-scrolled: rgba(255, 255, 255, 1);
+    --glass-hover-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    --glass-hover-border: rgba(14, 165, 233, 0.3);
+    --bg-gradient-1: rgba(14, 165, 233, 0.25);
+    --bg-gradient-2: rgba(99, 102, 241, 0.2);
 }
 
 /* =========================================
@@ -63,7 +86,7 @@ body {
 .bg-gradient-1 {
     width: 500px;
     height: 500px;
-    background: radial-gradient(circle, rgba(0, 212, 255, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
+    background: radial-gradient(circle, var(--bg-gradient-1) 0%, transparent 70%);
     top: -100px;
     left: -100px;
 }
@@ -71,7 +94,7 @@ body {
 .bg-gradient-2 {
     width: 600px;
     height: 600px;
-    background: radial-gradient(circle, rgba(138, 43, 226, 0.1) 0%, rgba(0, 0, 0, 0) 70%);
+    background: radial-gradient(circle, var(--bg-gradient-2) 0%, transparent 70%);
     bottom: -200px;
     right: -100px;
     animation-delay: -10s;
@@ -131,8 +154,8 @@ h4 {
 
 .glass-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: var(--glass-hover-shadow);
+    border-color: var(--glass-hover-border);
 }
 
 .glass-nav {
@@ -140,7 +163,7 @@ h4 {
     top: 0;
     width: 100%;
     z-index: 1000;
-    background: rgba(11, 15, 25, 0.8);
+    background: var(--nav-bg);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--glass-border);
@@ -149,8 +172,8 @@ h4 {
 
 .glass-nav.scrolled {
     padding: 0.5rem 0;
-    background: rgba(11, 15, 25, 0.95);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    background: var(--nav-bg-scrolled);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 /* =========================================
@@ -168,7 +191,8 @@ h4 {
 .logo {
     font-weight: 800;
     font-size: 1.8rem;
-    background: linear-gradient(135deg, #fff, var(--text-secondary));
+    background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     letter-spacing: -1px;
@@ -198,6 +222,21 @@ h4 {
 
 .nav-links a:hover::after {
     width: 100%;
+}
+
+.theme-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: color var(--transition-fast), transform var(--transition-fast);
+    padding: 0.2rem;
+}
+
+.theme-btn:hover {
+    color: var(--accent-color);
+    transform: rotate(15deg) scale(1.1);
 }
 
 /* =========================================
@@ -257,7 +296,7 @@ section {
 .name-title {
     font-size: clamp(3rem, 8vw, 5.5rem);
     font-weight: 800;
-    color: #fff;
+    color: var(--text-primary);
     margin-bottom: 0.5rem;
     line-height: 1.1;
     letter-spacing: -1.5px;
@@ -478,8 +517,9 @@ section {
 .project-image {
     width: calc(100% + 4rem);
     margin: -2rem -2rem 1.5rem -2rem;
-    height: 220px;
-    object-fit: cover;
+    height: auto;
+    max-height: 250px;
+    object-fit: contain;
     border-radius: 16px 16px 0 0;
     border-bottom: 1px solid var(--glass-border);
     filter: brightness(0.9);
@@ -625,7 +665,7 @@ footer p {
 .slide-in {
     opacity: 0;
     transform: translateY(50px);
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
 }
 
 .slide-in.visible {
@@ -639,7 +679,6 @@ footer p {
 @media (max-width: 768px) {
     .nav-links {
         display: none;
-        /* Add hamburger menu in JS later if needed */
     }
 
     section {
